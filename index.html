@@ -2,72 +2,120 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Cutest Proposal</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>A Question For You</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #9b59b6, #2c3e50);
-      color: white;
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
-      flex-direction: column;
+      min-height: 100vh;
+      font-family: sans-serif;
       text-align: center;
+      flex-direction: column;
+      background-color: #f0f0f0;
+      color: #333;
     }
+
     h1 {
-      margin-bottom: 20px;
+      margin-bottom: 2rem;
+      font-size: 2em;
     }
+
+    .container {
+      background: white;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
     .buttons {
-      display: flex;
-      gap: 20px;
-      margin-bottom: 20px;
+      position: relative;
+      width: 200px;
+      height: 40px;
+      margin: 0 auto;
     }
-    button {
-      padding: 12px 24px;
+
+    #yes-btn,
+    #no-btn {
+      position: absolute;
+      top: 0;
+      width: 90px;
+      height: 40px;
+      border-radius: 20px;
+      font-size: 16px;
       border: none;
-      border-radius: 8px;
-      font-size: 18px;
       cursor: pointer;
       transition: all 0.3s ease;
     }
-    #yesBtn {
-      background: #27ae60;
+
+    #yes-btn {
+      left: 0;
+      background-color: #4caf50;
       color: white;
     }
-    #noBtn {
-      background: #e74c3c;
+
+    #no-btn {
+      right: 0;
+      background-color: #f44336;
       color: white;
     }
+
     #message {
-      font-size: 20px;
-      min-height: 30px;
+      margin-top: 2rem;
+      font-size: 1.5em;
+      color: #4caf50;
+    }
+
+    .hidden {
+      display: none;
     }
   </style>
 </head>
 <body>
-  <h1>Do you love me? 💕</h1>
-  <div class="buttons">
-    <button id="yesBtn">Yes</button>
-    <button id="noBtn">No</button>
-  </div>
-  <div id="message"></div>
 
-  <script>
-    const yesBtn = document.getElementById('yesBtn');
-    const noBtn = document.getElementById('noBtn');
-    const message = document.getElementById('message');
+<div class="container">
+  <h1>Do you have a crush on me?</h1>
+  <div class="buttons">
+    <button id="yes-btn">Yes</button>
+    <button id="no-btn">No</button>
+  </div>
+</div>
+
+<div id="message" class="hidden">
+  <p>I knew it!</p>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const yesButton = document.getElementById('yes-btn');
+    const noButton = document.getElementById('no-btn');
+    const questionContainer = document.querySelector('.container');
+    const finalMessage = document.getElementById('message');
     const buttonsContainer = document.querySelector('.buttons');
 
-    yesBtn.addEventListener('click', () => {
-      message.textContent = "Awww 💖 You're the best!";
+    noButton.addEventListener('click', () => {
+      // Generate new random positions within the container
+      const containerWidth = buttonsContainer.clientWidth - noButton.offsetWidth;
+      const containerHeight = buttonsContainer.clientHeight - noButton.offsetHeight;
+
+      // Set a new random position for the "Yes" button
+      const newLeft = Math.random() * containerWidth;
+      const newTop = Math.random() * containerHeight;
+
+      yesButton.style.left = newLeft + 'px';
+      yesButton.style.top = newTop + 'px';
+
+      // To make the "No" button disappear after the first click
+      noButton.style.display = 'none';
     });
 
-    noBtn.addEventListener('click', () => {
-      // Swap positions of Yes and No
-      buttonsContainer.insertBefore(yesBtn, noBtn);
-      message.textContent = "Oops 😏 Looks like you meant 'Yes'!";
+    yesButton.addEventListener('click', () => {
+      questionContainer.classList.add('hidden');
+      finalMessage.classList.remove('hidden');
     });
-  </script>
+  });
+</script>
+
 </body>
 </html>
