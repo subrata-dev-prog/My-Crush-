@@ -12,6 +12,7 @@
       height: 100vh;
       background: linear-gradient(135deg, #ffdde1, #ee9ca7);
       font-family: "Poppins", sans-serif;
+      overflow: hidden;
     }
 
     .card {
@@ -30,9 +31,10 @@
     }
 
     .btn-container {
-      display: flex;
-      justify-content: center;
-      gap: 25px;
+      position: relative;
+      height: 80px;
+      width: 300px;
+      margin: 0 auto;
     }
 
     button {
@@ -43,28 +45,27 @@
       cursor: pointer;
       transition: all 0.4s ease;
       min-width: 100px;
+      position: absolute;
     }
 
     #yesBtn {
       background: #4CAF50;
       color: #fff;
       box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);
+      left: 30px;
+      top: 20px;
     }
 
     #noBtn {
       background: #f44336;
       color: #fff;
       box-shadow: 0 5px 15px rgba(244, 67, 54, 0.3);
+      right: 30px;
+      top: 20px;
     }
 
     button:hover {
       transform: scale(1.08);
-    }
-
-    /* Smooth swap positions */
-    .btn-container button {
-      position: relative;
-      transition: all 0.5s ease;
     }
   </style>
 </head>
@@ -80,22 +81,21 @@
   <script>
     const yesBtn = document.getElementById("yesBtn");
     const noBtn = document.getElementById("noBtn");
-    let swapped = false;
-
-    noBtn.addEventListener("click", () => {
-      if (!swapped) {
-        yesBtn.style.transform = "translateX(130px)";
-        noBtn.style.transform = "translateX(-130px)";
-        swapped = true;
-      } else {
-        yesBtn.style.transform = "translateX(0)";
-        noBtn.style.transform = "translateX(0)";
-        swapped = false;
-      }
-    });
 
     yesBtn.addEventListener("click", () => {
       alert("Yaaay! You said YES 😍💖✨");
+    });
+
+    noBtn.addEventListener("click", () => {
+      // Random position inside viewport
+      const screenW = window.innerWidth - 120;
+      const screenH = window.innerHeight - 60;
+
+      const randomX = Math.floor(Math.random() * screenW);
+      const randomY = Math.floor(Math.random() * screenH);
+
+      noBtn.style.left = randomX + "px";
+      noBtn.style.top = randomY + "px";
     });
   </script>
 </body>
