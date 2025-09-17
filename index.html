@@ -3,119 +3,203 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>A Question For You</title>
+  <title>A Crucial Question</title>
   <style>
+    :root {
+      --bg-color-start: #ff7e5f;
+      --bg-color-end: #feb47b;
+      --text-color: #333;
+      --glass-bg: rgba(255, 255, 255, 0.2);
+      --glass-border: rgba(255, 255, 255, 0.3);
+      --yes-color: #4CAF50;
+      --no-color: #f44336;
+    }
+
     body {
       display: flex;
       justify-content: center;
       align-items: center;
       min-height: 100vh;
-      font-family: sans-serif;
+      font-family: 'Poppins', sans-serif;
       text-align: center;
-      flex-direction: column;
-      background-color: #f0f0f0;
-      color: #333;
+      background: linear-gradient(45deg, var(--bg-color-start), var(--bg-color-end));
+      background-size: 400% 400%;
+      animation: gradientBG 15s ease infinite;
+      overflow: hidden;
+      margin: 0;
     }
 
-    h1 {
-      margin-bottom: 2rem;
-      font-size: 2em;
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
     }
 
     .container {
-      background: white;
-      padding: 2rem;
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      position: relative;
+      background: var(--glass-bg);
+      border-radius: 20px;
+      padding: 3rem;
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--glass-border);
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+      animation: fadeIn 1s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    h1 {
+      font-size: 2.5em;
+      margin-bottom: 2rem;
+      color: white;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
     }
 
     .buttons {
       position: relative;
-      width: 200px;
-      height: 40px;
+      width: 250px;
+      height: 60px;
       margin: 0 auto;
     }
 
-    #yes-btn,
-    #no-btn {
+    #yes-btn, #no-btn {
       position: absolute;
-      top: 0;
-      width: 90px;
-      height: 40px;
-      border-radius: 20px;
-      font-size: 16px;
+      width: 100px;
+      height: 50px;
+      border-radius: 25px;
+      font-size: 18px;
+      font-weight: bold;
       border: none;
       cursor: pointer;
-      transition: all 0.3s ease;
+      color: white;
+      transition: all 0.4s ease-in-out;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
 
     #yes-btn {
       left: 0;
-      background-color: #4caf50;
-      color: white;
+      background-color: var(--yes-color);
+    }
+
+    #yes-btn:hover {
+      transform: scale(1.1);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
     }
 
     #no-btn {
       right: 0;
-      background-color: #f44336;
-      color: white;
+      background-color: var(--no-color);
     }
 
-    #message {
-      margin-top: 2rem;
-      font-size: 1.5em;
-      color: #4caf50;
+    #no-btn:active {
+      transform: scale(0.95);
+      background-color: #d3352c;
     }
 
     .hidden {
       display: none;
     }
+
+    .final-message {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #a8ff78, #78ffd6);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      color: white;
+      font-size: 3em;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+      animation: fade-in-scale-up 1s ease-in-out forwards;
+      opacity: 0;
+      z-index: 100;
+    }
+
+    @keyframes fade-in-scale-up {
+      from { opacity: 0; transform: scale(0.5); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    .final-message p {
+      margin: 0;
+    }
   </style>
 </head>
 <body>
 
-<div class="container">
-  <h1>Do you have a crush on me?</h1>
-  <div class="buttons">
-    <button id="yes-btn">Yes</button>
-    <button id="no-btn">No</button>
+  <div class="container">
+    <h1>Do you have a crush on me?</h1>
+    <div class="buttons">
+      <button id="yes-btn">Yes</button>
+      <button id="no-btn">No</button>
+    </div>
   </div>
-</div>
 
-<div id="message" class="hidden">
-  <p>I knew it!</p>
-</div>
+  <div id="message" class="hidden final-message">
+    <p>I knew it! 😉</p>
+    <p>See you at 7!</p>
+  </div>
 
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const yesButton = document.getElementById('yes-btn');
-    const noButton = document.getElementById('no-btn');
-    const questionContainer = document.querySelector('.container');
-    const finalMessage = document.getElementById('message');
-    const buttonsContainer = document.querySelector('.buttons');
+  <audio id="success-sound" src="https://assets.mixkit.co/sfx/download/mixkit-positive-notification-alert-2676.wav"></audio>
 
-    noButton.addEventListener('click', () => {
-      // Generate new random positions within the container
-      const containerWidth = buttonsContainer.clientWidth - noButton.offsetWidth;
-      const containerHeight = buttonsContainer.clientHeight - noButton.offsetHeight;
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const yesButton = document.getElementById('yes-btn');
+      const noButton = document.getElementById('no-btn');
+      const questionContainer = document.querySelector('.container');
+      const finalMessage = document.getElementById('message');
+      const buttonsContainer = document.querySelector('.buttons');
+      const successSound = document.getElementById('success-sound');
 
-      // Set a new random position for the "Yes" button
-      const newLeft = Math.random() * containerWidth;
-      const newTop = Math.random() * containerHeight;
+      noButton.addEventListener('mouseenter', (event) => {
+        // Find safe random positions within the button container
+        const containerRect = buttonsContainer.getBoundingClientRect();
+        const buttonRect = noButton.getBoundingClientRect();
 
-      yesButton.style.left = newLeft + 'px';
-      yesButton.style.top = newTop + 'px';
+        let newLeft, newTop;
+        const maxAttempts = 50;
+        let attempts = 0;
 
-      // To make the "No" button disappear after the first click
-      noButton.style.display = 'none';
+        do {
+          newLeft = Math.random() * (containerRect.width - buttonRect.width);
+          newTop = Math.random() * (containerRect.height - buttonRect.height);
+          attempts++;
+        } while (attempts < maxAttempts && isOverlapping(newLeft, newTop, yesButton));
+        
+        noButton.style.left = newLeft + 'px';
+        noButton.style.top = newTop + 'px';
+      });
+
+      function isOverlapping(newLeft, newTop, otherButton) {
+        const otherRect = otherButton.getBoundingClientRect();
+        const buttonWidth = noButton.offsetWidth;
+        const buttonHeight = noButton.offsetHeight;
+
+        // Add some padding to prevent the buttons from getting too close
+        const padding = 20;
+
+        return (
+          newLeft < otherRect.left - padding ||
+          newLeft > otherRect.right + padding ||
+          newTop < otherRect.top - padding ||
+          newTop > otherRect.bottom + padding
+        );
+      }
+
+      yesButton.addEventListener('click', () => {
+        questionContainer.classList.add('hidden');
+        finalMessage.classList.remove('hidden');
+        successSound.play();
+      });
     });
-
-    yesButton.addEventListener('click', () => {
-      questionContainer.classList.add('hidden');
-      finalMessage.classList.remove('hidden');
-    });
-  });
-</script>
+  </script>
 
 </body>
 </html>
