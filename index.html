@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Cutest Proposal</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #9b59b6, #2c3e50);
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      flex-direction: column;
+      text-align: center;
+    }
+    h1 {
+      margin-bottom: 20px;
+    }
+    .buttons {
+      display: flex;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+    button {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 8px;
+      font-size: 18px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    #yesBtn {
+      background: #27ae60;
+      color: white;
+    }
+    #noBtn {
+      background: #e74c3c;
+      color: white;
+    }
+    #message {
+      font-size: 20px;
+      min-height: 30px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Do you love me? 💕</h1>
+  <div class="buttons">
+    <button id="yesBtn">Yes</button>
+    <button id="noBtn">No</button>
+  </div>
+  <div id="message"></div>
+
+  <script>
+    const yesBtn = document.getElementById('yesBtn');
+    const noBtn = document.getElementById('noBtn');
+    const message = document.getElementById('message');
+    const buttonsContainer = document.querySelector('.buttons');
+
+    yesBtn.addEventListener('click', () => {
+      message.textContent = "Awww 💖 You're the best!";
+    });
+
+    noBtn.addEventListener('click', () => {
+      // Swap positions of Yes and No
+      buttonsContainer.insertBefore(yesBtn, noBtn);
+      message.textContent = "Oops 😏 Looks like you meant 'Yes'!";
+    });
+  </script>
+</body>
+</html>
